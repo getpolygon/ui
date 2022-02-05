@@ -1,0 +1,20 @@
+import Document, { Html, Head, Main, NextScript } from "next/document";
+
+class Polygon extends Document {
+  public render(): JSX.Element {
+    return (
+      <Html>
+        <Head>
+          <link rel={"manifest"} href={"/manifest.json"} />
+          <link rel={"apple-touch-icon"} href={"/icon-256x256.png"} />
+        </Head>
+        <body>
+          <Main />
+          <NextScript />
+        </body>
+      </Html>
+    );
+  }
+}
+
+export default Polygon;
