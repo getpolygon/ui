@@ -17,96 +17,90 @@ export const Navbar = () => {
   const user = useUserStore(({ user }) => user);
   const [scrolled, setScrolled] = useState(false);
 
-  const action = async () => {
-    if (!isEmpty(user)) await signOut({ redirect: true });
-    else await signIn();
+  const action = () => {
+    if (!isEmpty(user)) signOut({ redirect: true });
+    else signIn();
   };
 
   useEffect(() => {
-    const listener = window.addEventListener("scroll", () => {
+    const listener = () => {
       if (window.scrollY > 0) setScrolled(true);
       else setScrolled(false);
-    });
+    };
 
+    window.addEventListener("scroll", listener);
     return () => {
-      window.removeEventListener("scroll", () => listener);
+      window.removeEventListener("scroll", listener);
     };
   }, []);
 
   return (
-    <Flex
+    <Box
+      px={8}
+      py={4}
       top={0}
-      w={"full"}
+      zIndex={1}
       pos={"sticky"}
       role={"navigation"}
-      alignItems={"center"}
-      justifyContent={"center"}
+      borderBottom={"2px"}
+      borderColor={"gray.700"}
       backdropFilter={"blur(20px)"}
-      boxShadow={scrolled ? "xl" : "none"}
+      transition={"150ms ease-in-out"}
+      boxShadow={scrolled ? "2xl" : "xl"}
     >
-      <Box
-        w={"5xl"}
-        m={scrolled ? 0 : 4}
-        backdropFilter={"blur(20px)"}
-        transition={"100ms ease-in-out"}
-        border={scrolled ? "none" : "2px"}
-        rounded={scrolled ? "none" : "2xl"}
-        boxShadow={scrolled ? "none" : "2xl"}
-        roundedBottom={scrolled ? "2xl" : ""}
-        borderColor={scrolled ? "transparent" : "gray.700"}
+      <Flex
+        mx={"auto"}
+        maxW={"6xl"}
+        alignItems={"center"}
+        justifyContent={"space-between"}
       >
-        <Flex
-          p={4}
-          w={"full"}
-          alignItems={"center"}
-          justifyContent={"space-between"}
-        >
-          <Box>
-            <Stack direction={"row"} alignItems={"center"}>
-              <NextLink href={"/"} passHref>
-                <chakra.a>
-                  <Text
-                    fontWeight={"bold"}
-                    color={"purple.400"}
-                    fontSize={["3xl", "4xl"]}
-                  >
-                    Polygon
-                  </Text>
-                </chakra.a>
-              </NextLink>
+        <Box>
+          <Stack direction={"row"} alignItems={"center"}>
+            <NextLink href={"/"} passHref>
+              <chakra.a>
+                <Text
+                  fontWeight={"bold"}
+                  color={"purple.400"}
+                  fontSize={["3xl", "4xl"]}
+                >
+                  Polygon
+                </Text>
+              </chakra.a>
+            </NextLink>
 
-              <Box>
-                <Badge rounded={"full"} colorScheme={"purple"}>
-                  alpha
-                </Badge>
-              </Box>
-            </Stack>
-          </Box>
+            <Box>
+              <Badge rounded={"full"} colorScheme={"purple"}>
+                alpha
+              </Badge>
+            </Box>
+          </Stack>
+        </Box>
 
-          <Box>
-            <Stack spacing={4} direction={"row"}>
-              {!isEmpty(user) && (
-                <NextLink href={"/platform"}>
-                  <chakra.a>
-                    <Button colorScheme={"purple"} size={"lg"} rounded={"xl"}>
-                      Platform
-                    </Button>
-                  </chakra.a>
-                </NextLink>
-              )}
-
+        <Stack spacing={4} direction={"row"}>
+          {!isEmpty(user) && (
+            <NextLink href={"/platform"}>
               <Button
+                as={"a"}
                 size={"lg"}
-                rounded={"xl"}
-                colorScheme={"gray"}
-                onClick={async () => await action()}
+                rounded={"full"}
+                colorScheme={"purple"}
               >
-                {isEmpty(user) ? "Login" : "Logout"}
+                Platform
               </Button>
-            </Stack>
-          </Box>
-        </Flex>
-      </Box>
-    </Flex>
+            </NextLink>
+          )}
+
+          <Button
+            zIndex={0}
+            size={"lg"}
+            rounded={"full"}
+            colorScheme={"gray"}
+            onClick={() => action()}
+          >
+            {isEmpty(user) ? "Login" : "Logout"}
+          </Button>
+        </Stack>
+      </Flex>
+    </Box>
   );
 };

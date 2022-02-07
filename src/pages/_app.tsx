@@ -1,12 +1,9 @@
-// We will need to override some things in the `body`.
-import "~/lib/theme/override.css";
-
 import axios from "~/lib/http/axios";
 import App, { AppContext, AppInitialProps } from "next/app";
 import { UserProvider } from "~/lib/providers/UserProvider";
 import { getSession, SessionProvider } from "next-auth/react";
-import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { TokenProvider } from "~/lib/providers/TokenProvider";
+import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 
 class Polygon extends App {
   public static async getInitialProps(
@@ -40,7 +37,7 @@ class Polygon extends App {
 
     return (
       <SessionProvider refetchInterval={0} session={pageProps.session}>
-        <ChakraProvider resetCSS={true}>
+        <ChakraProvider>
           <TokenProvider tokens={pageProps.tokens}>
             <UserProvider user={pageProps.user}>
               <Component {...pageProps} />

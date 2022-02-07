@@ -8,9 +8,11 @@ import {
   Box,
   chakra,
   Container,
+  Flex,
   Stack,
   StackItem,
   Text,
+  useColorModeValue,
   VisuallyHidden,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
@@ -53,61 +55,72 @@ const SocialButton = ({
 
 export const Footer = () => {
   return (
-    <Box roundedTop={"lg"} color={"gray.200"} bgColor={"gray.900"}>
-      <Container
-        py={4}
-        as={Stack}
-        spacing={4}
-        maxW={"6xl"}
+    <Box color={"gray.200"} bgColor={"gray.900"}>
+      <Flex
+        px={4}
+        py={8}
+        w={"full"}
         alignItems={"center"}
-        direction={{ base: "column", md: "row" }}
-        justify={{ base: "center", md: "space-between" }}
+        justifyContent={"center"}
       >
-        <Box userSelect={"none"}>
-          <Stack alignItems={"center"} direction={"row"}>
-            <StackItem>
-              <Text fontSize={"2xl"} fontWeight={"bold"} color={"purple.400"}>
-                Polygon
-              </Text>
-            </StackItem>
+        <Box>
+          <Stack
+            spacing={4}
+            alignItems={"center"}
+            direction={{ base: "column", md: "row" }}
+            justifyContent={{ base: "center", md: "space-between" }}
+          >
+            <Box userSelect={"none"}>
+              <Stack alignItems={"center"} direction={"row"}>
+                <StackItem>
+                  <Text
+                    fontSize={"2xl"}
+                    fontWeight={"bold"}
+                    color={useColorModeValue("purple.200", "purple.400")}
+                  >
+                    Polygon
+                  </Text>
+                </StackItem>
 
-            <StackItem>
-              <Badge
-                fontSize={"0.65em"}
-                rounded={"full"}
-                colorScheme={"purple"}
+                <StackItem>
+                  <Badge
+                    fontSize={"0.65em"}
+                    rounded={"full"}
+                    colorScheme={"purple"}
+                  >
+                    alpha
+                  </Badge>
+                </StackItem>
+              </Stack>
+            </Box>
+
+            <Text userSelect={"none"} textAlign={"center"}>
+              {new Date().getFullYear()} Polygon Open-Source Project. All rights
+              reserved
+            </Text>
+
+            <Stack direction={"row"} spacing={4}>
+              <SocialButton
+                label={"Discord"}
+                href={"https://discord.com/invite/tExw2XqgtU"}
               >
-                alpha
-              </Badge>
-            </StackItem>
+                <FaDiscord />
+              </SocialButton>
+
+              <SocialButton
+                label={"GitHub"}
+                href={"https://github.com/polygon-isecure"}
+              >
+                <FaGithub />
+              </SocialButton>
+
+              <SocialButton label={"Email"} href={"mailto:support@polygon.am"}>
+                <MdOutlineMailOutline />
+              </SocialButton>
+            </Stack>
           </Stack>
         </Box>
-
-        <Text userSelect={"none"} textAlign={"center"}>
-          &copy; {new Date().getFullYear()} Polygon Open-Source Project. All
-          rights reserved
-        </Text>
-
-        <Stack direction={"row"} spacing={4}>
-          <SocialButton
-            label={"Discord"}
-            href={"https://discord.com/invite/tExw2XqgtU"}
-          >
-            <FaDiscord />
-          </SocialButton>
-
-          <SocialButton
-            label={"GitHub"}
-            href={"https://github.com/polygon-isecure"}
-          >
-            <FaGithub />
-          </SocialButton>
-
-          <SocialButton label={"Email"} href={"mailto:support@polygon.am"}>
-            <MdOutlineMailOutline />
-          </SocialButton>
-        </Stack>
-      </Container>
+      </Flex>
     </Box>
   );
 };
