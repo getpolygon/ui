@@ -24,7 +24,7 @@ export const UserProvider = ({
 
   useEffect(() => {
     setUser(__user);
-  }, []);
+  }, [__user, setUser]);
 
   return (
     <UserContext.Provider value={{ user }}>{children}</UserContext.Provider>

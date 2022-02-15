@@ -30,7 +30,7 @@ export const TokenProvider = ({
   useEffect(() => {
     setAccess(__tokens.access);
     setRefresh(__tokens.refresh);
-  }, []);
+  }, [__tokens.access, __tokens.refresh, setAccess, setRefresh]);
 
   return (
     <TokenContext.Provider value={{ tokens }}>{children}</TokenContext.Provider>

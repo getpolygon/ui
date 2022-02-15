@@ -29,13 +29,6 @@ const options: NextAuthOptions = {
       },
     }),
   ],
-  session: {
-    strategy: "jwt",
-  },
-  secret: process.env.NEXT_AUTH_JWT_SECRET,
-  jwt: {
-    secret: process.env.NEXT_AUTH_JWT_SECRET,
-  },
   callbacks: {
     jwt: ({ token, user: data }) => {
       if (!isEmpty(data)) {
@@ -50,6 +43,9 @@ const options: NextAuthOptions = {
       (session as any).user = token;
       return session;
     },
+  },
+  pages: {
+    signIn: "/auth/login",
   },
 };
 

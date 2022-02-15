@@ -1,32 +1,43 @@
-import { ReactElement, ReactNode } from "react";
-import { Box, Stack, Text, useColorModeValue as mode } from "@chakra-ui/react";
+import { ReactElement } from "react";
+import { Box, BoxProps, Stack, Text } from "@chakra-ui/react";
 
-interface FeatureProps {
+export interface IFeature extends BoxProps {
   title: string;
   icon: ReactElement;
-  children: ReactNode;
 }
 
-export const Feature = ({ title, children, icon }: FeatureProps) => {
+export const Feature = ({ title, children, icon, ...rest }: IFeature) => {
   return (
     <Box
       p={4}
-      rounded={"xl"}
+      as={"section"}
       border={"2px"}
-      boxShadow={"2xl"}
+      rounded={"xl"}
+      role={"article"}
+      userSelect={"none"}
       maxW={["xl", "2xl"]}
       borderColor={"gray.700"}
+      transition={"120ms ease-in-out"}
+      _hover={{
+        boxShadow: "xl",
+        transform: "translateY(-6px)",
+      }}
+      {...rest}
     >
       <Stack
         spacing={{ base: 3, md: "6" }}
         direction={{ base: "column", md: "row" }}
       >
-        <Box fontSize={"6xl"}>{icon}</Box>
-        <Stack spacing={1}>
-          <Text fontWeight="extrabold" fontSize="lg">
+        <Box as={"section"} role={"img"} fontSize={"6xl"}>
+          {icon}
+        </Box>
+
+        <Stack as={"section"} spacing={1}>
+          <Text role={"term"} fontWeight={"extrabold"} fontSize={"lg"}>
             {title}
           </Text>
-          <Box color={mode("gray.600", "gray.400")}>{children}</Box>
+
+          <Box color={"gray.400"}>{children}</Box>
         </Stack>
       </Stack>
     </Box>
