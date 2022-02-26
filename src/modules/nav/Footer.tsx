@@ -93,8 +93,8 @@ export const Footer = () => {
           </Box>
 
           <Text as={"section"} userSelect={"none"} textAlign={"center"}>
-            {new Date().getFullYear()} Proudly made in 🇦🇲 by Michael Grigoryan
-            and open-source contributors.
+            Proudly made in 🇦🇲 with the help and collaboration of open-source
+            contributors.
           </Text>
 
           <Stack as={"section"} role={"list"} direction={"row"} spacing={4}>

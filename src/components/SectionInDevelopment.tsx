@@ -2,7 +2,7 @@ import { GiBarrier } from "react-icons/gi";
 import { Box, BoxProps, Flex, Heading, Icon, Stack } from "@chakra-ui/react";
 
 export const SectionInDevelopment = ({ children, ...rest }: BoxProps) => {
-  return (
+  return process.env.NODE_ENV === "production" ? (
     <Box
       p={4}
       border={"4px"}
@@ -27,5 +27,7 @@ export const SectionInDevelopment = ({ children, ...rest }: BoxProps) => {
         </Box>
       </Flex>
     </Box>
+  ) : (
+    <>{children}</>
   );
 };
