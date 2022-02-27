@@ -16,8 +16,12 @@ import axios from "~/lib/http/axios";
 import { AuthUi } from "~/modules/auth/AuthUi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SectionInDevelopment } from "~/components/SectionInDevelopment";
+import { useToast } from "~/lib/ui/useToast";
 
 const schema = z.object({
+  username: z.string().regex(/^[a-z0-9_-]{3,15}$/gm, {
+    message: "Please enter a valid username",
+  }),
   lastName: z.string({ required_error: "Please enter your last name" }),
   firstName: z.string({ required_error: "Please enter your first name" }),
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -60,10 +64,23 @@ const Page: NextPage = () => {
     resolver: zodResolver(schema),
   });
 
+  const toast = useToast();
   const { errors, isValid, isSubmitting, isDirty } = formState;
+
   const submit = async (payload: Schema) => {
     const response = await axios.post("/api/auth/register", payload);
-    console.log(response);
+    if (response.status === 201) {
+      toast({
+        status: "success",
+        title: "Account created successfully",
+      });
+    } else {
+      toast({
+        status: "error",
+        title: "An error occurred",
+        description: "There was an issue while creating your account",
+      });
+    }
   };
 
   return (
@@ -97,16 +114,34 @@ const Page: NextPage = () => {
             <Stack direction={"row"}>
               <FormControl isRequired isInvalid={!isNil(errors.firstName)}>
                 <FormLabel>First name</FormLabel>
-                <Input placeholder={"John"} {...register("firstName")} />
+                <Input
+                  type={"text"}
+                  placeholder={"John"}
+                  {...register("firstName")}
+                />
                 <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={!isNil(errors.lastName)}>
                 <FormLabel>Last name</FormLabel>
-                <Input placeholder={"Doe"} {...register("lastName")} />
+                <Input
+                  type={"text"}
+                  placeholder={"Doe"}
+                  {...register("lastName")}
+                />
                 <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
               </FormControl>
             </Stack>
+
+            <FormControl isRequired isInvalid={!isNil(errors.username)}>
+              <FormLabel>Username</FormLabel>
+              <Input
+                type={"text"}
+                placeholder={"john_doe-1234"}
+                {...register("username")}
+              />
+              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+            </FormControl>
 
             <FormControl isRequired isInvalid={!isNil(errors.email)}>
               <FormLabel>Email address</FormLabel>

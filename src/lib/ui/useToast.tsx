@@ -1,11 +1,11 @@
 import { UseToastOptions, useToast as useChakraToast } from "@chakra-ui/react";
 
-export const useToast = (props: UseToastOptions) => {
+export const useToast = (props?: UseToastOptions) => {
   return useChakraToast({
     duration: 5000,
     isClosable: true,
-    variant: "subtle",
-    position: "bottom",
+    variant: "left-accent",
+    position: "bottom-right",
     ...props,
   });
 };
