@@ -85,7 +85,7 @@ export const Navbar = () => {
 
         <Stack spacing={4} direction={"row"}>
           {!isEmpty(user) && (
-            <NextLink href={"/platform"}>
+            <NextLink href={"/platform"} passHref>
               <Button
                 as={"a"}
                 size={"lg"}
