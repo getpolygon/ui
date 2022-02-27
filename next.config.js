@@ -1,15 +1,29 @@
+const env = require("env-var");
 const withPWA = require("next-pwa");
 
-const nextConfig = withPWA({
-  pwa: {
-    register: true,
-    skipWaiting: true,
-    disable: process.env.NODE_ENV === "development",
-  },
+/** @type {import('next').NextConfig} */
+const nextConfig = {
   reactStrictMode: true,
   images: {
     domains: ["images.unsplash.com"],
   },
+  env: {
+    IRON_SESSION_SECRET: env
+      .get("IRON_SESSION_SECRET")
+      .required(true)
+      .asString(),
+    POLYGON_CORE_URL: env.get("POLYGON_CORE_URL").required(true).asUrlString(),
+  },
+};
+
+const config = withPWA({
+  pwa: {
+    dest: "public",
+    register: true,
+    skipWaiting: true,
+    disable: process.env.NODE_ENV === "development",
+  },
+  ...nextConfig,
 });
 
-module.exports = nextConfig;
+module.exports = config;
