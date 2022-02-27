@@ -41,30 +41,27 @@ export const AuthUi = (
     <>
       <Seo title={props.seo.prefix + " - " + WEBSITE_TITLE} />
 
-      <Flex w={"full"} h={"100vh"} alignItems={"center"}>
+      <Flex h={"100vh"} alignItems={"center"}>
         {/* Static content */}
-        <Box
-          py={8}
-          px={4}
+        <Flex
           w={"full"}
-          maxW={"4xl"}
           h={"inherit"}
           flexGrow={0.5}
+          alignItems={"center"}
+          justifyContent={"center"}
           display={["none", null, null, "initial"]}
         >
           <Image
             w={"full"}
             h={"full"}
             zIndex={0}
-            rounded={"xl"}
-            boxShadow={"2xl"}
             userSelect={"none"}
             objectFit={"cover"}
             alt={"Background image"}
             filter={"brightness(50%)"}
             transition={"150ms ease-in-out"}
             _hover={{
-              filter: "brightness(60%)",
+              filter: "brightness(55%)",
             }}
             src={
               "https://source.unsplash.com/random/?futuristic,future,purple,dimmed"
@@ -74,7 +71,7 @@ export const AuthUi = (
           <Text
             left={12}
             zIndex={1}
-            bottom={50}
+            bottom={"10"}
             pos={"absolute"}
             fontWeight={"medium"}
           >
@@ -89,7 +86,7 @@ export const AuthUi = (
             </chakra.a>
             <chakra.span userSelect={"none"}>.</chakra.span>
           </Text>
-        </Box>
+        </Flex>
 
         <Flex
           w={"full"}
@@ -98,7 +95,7 @@ export const AuthUi = (
           alignItems={"center"}
           justifyContent={"center"}
         >
-          <Stack maxW={"2xl"} w={"full"} spacing={6}>
+          <Stack maxW={"xl"} w={"full"} spacing={6}>
             <Stack spacing={6}>
               <Box userSelect={"none"}>
                 <Stack spacing={4}>

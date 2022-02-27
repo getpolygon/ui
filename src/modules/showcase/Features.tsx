@@ -78,13 +78,13 @@ const features: IFeature[] = [
   },
 
   {
-    title: "Beautiful UI",
+    title: "Stunning UI",
     icon: <FcMultipleDevices />,
     children: (
       <>
-        Polygon provides a beautiful user interface, crafted with the best
-        bleeding-edge front-end technologies. Our stack includes the latest
-        versions of{" "}
+        Polygon provides an open-source and modern user interface, crafted with
+        the best bleeding-edge front-end technologies. Our stack includes the
+        latest versions of{" "}
         <Link href={"https://www.typescriptlang.org/"}>TypeScript</Link>,{" "}
         <Link href={"https://www.chakra-ui.com/"}>Chakra UI</Link>, and{" "}
         <Link href={"https://www.nextjs.org/"}>Next.js</Link>. The pages are
