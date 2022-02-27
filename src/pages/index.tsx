@@ -25,7 +25,7 @@ const Page: NextPage = () => {
       <Seo />
 
       <WelcomeLayout>
-        <Box as={"main"} role={"main"} px={4} py={9} flexGrow={1}>
+        <Box as={"main"} role={"main"} px={4} py={20} flexGrow={1}>
           {/* Sections */}
           <Stack role={"list"} spacing={8}>
             {/* Hero + CTA Buttons */}

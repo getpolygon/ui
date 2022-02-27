@@ -1,29 +1,26 @@
+import { z } from "zod";
+import { NextPage } from "next";
+import NextLink from "next/link";
+import { useForm } from "react-hook-form";
 import {
   Button,
+  chakra,
   FormControl,
   FormErrorMessage,
   FormLabel,
   Input,
   Stack,
-  chakra,
-  InputGroup,
-  InputRightElement,
-  IconButton,
 } from "@chakra-ui/react";
-import { z } from "zod";
 import { isNil } from "lodash";
-import { NextPage } from "next";
-import { useState } from "react";
-import NextLink from "next/link";
 import axios from "~/lib/http/axios";
-import { useForm } from "react-hook-form";
 import { AuthUi } from "~/modules/auth/AuthUi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import { SectionInDevelopment } from "~/components/SectionInDevelopment";
 
 const schema = z.object({
-  email: z.string().email({ message: "Please provide a valid email address" }),
+  lastName: z.string({ required_error: "Please enter your last name" }),
+  firstName: z.string({ required_error: "Please enter your first name" }),
+  email: z.string().email({ message: "Please enter a valid email address" }),
   password: z
     .string()
     .min(8, { message: "Password should be at least 8 characters long" }),
@@ -33,7 +30,7 @@ type Schema = z.infer<typeof schema>;
 
 const heading = (
   <>
-    Login to{" "}
+    Register at{" "}
     <chakra.span fontWeight={"9000"} color={"purple.400"}>
       Polygon
     </chakra.span>
@@ -42,18 +39,18 @@ const heading = (
 
 const helper = (
   <>
-    Don{"'"}t have an account?{" "}
-    <NextLink passHref href={"/auth/signup"}>
+    Already using Polygon?{" "}
+    <NextLink passHref href={"/auth/login"}>
       <chakra.a
         _hover={{
           color: "purple.200",
         }}
         color={"purple.300"}
       >
-        Create one
+        Log in
       </chakra.a>
     </NextLink>{" "}
-    now!
+    to your account!
   </>
 );
 
@@ -63,19 +60,17 @@ const Page: NextPage = () => {
     resolver: zodResolver(schema),
   });
 
+  const { errors, isValid, isSubmitting, isDirty } = formState;
   const submit = async (payload: Schema) => {
-    const response = await axios.post("/api/login", payload);
-    return console.log(response);
+    const response = await axios.post("/api/auth/register", payload);
+    console.log(response);
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const { errors, isValid, isDirty, isSubmitting } = formState;
 
   return (
     <SectionInDevelopment>
       <AuthUi
         seo={{
-          prefix: "Login",
+          prefix: "Register",
         }}
         heading={{
           helper,
@@ -99,49 +94,46 @@ const Page: NextPage = () => {
           onSubmit={handleSubmit(submit)}
         >
           <Stack>
-            <FormControl isRequired isInvalid={!isNil(errors.email)}>
-              <FormLabel htmlFor={"email"}>Email</FormLabel>
+            <Stack direction={"row"}>
+              <FormControl isRequired isInvalid={!isNil(errors.firstName)}>
+                <FormLabel>First name</FormLabel>
+                <Input placeholder={"John"} {...register("firstName")} />
+                <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
+              </FormControl>
 
+              <FormControl isRequired isInvalid={!isNil(errors.lastName)}>
+                <FormLabel>Last name</FormLabel>
+                <Input placeholder={"Doe"} {...register("lastName")} />
+                <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
+              </FormControl>
+            </Stack>
+
+            <FormControl isRequired isInvalid={!isNil(errors.email)}>
+              <FormLabel>Email address</FormLabel>
               <Input
-                id={"email"}
                 type={"email"}
                 placeholder={"john@doe.org"}
                 {...register("email")}
               />
-
               <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired isInvalid={!isNil(errors.password)}>
-              <FormLabel htmlFor={"password"}>Password</FormLabel>
-
-              <InputGroup>
-                <Input
-                  id={"password"}
-                  placeholder={"Minimum 8 characters"}
-                  type={showPassword ? "text" : "password"}
-                  {...register("password")}
-                />
-
-                <InputRightElement>
-                  <IconButton
-                    size={"sm"}
-                    icon={showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
-                    aria-label={"Toggle password visibility"}
-                    onClick={() => setShowPassword(!showPassword)}
-                  />
-                </InputRightElement>
-              </InputGroup>
-
+              <FormLabel>Password</FormLabel>
+              <Input
+                type={"password"}
+                placeholder={"Minimum 8 characters"}
+                {...register("password")}
+              />
               <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
             </FormControl>
 
             <Button
               type={"submit"}
               isLoading={isSubmitting}
-              disabled={!isValid || !isDirty || isSubmitting}
+              isDisabled={!isValid || isSubmitting || !isDirty}
             >
-              Log in
+              Sign Up
             </Button>
           </Stack>
         </form>

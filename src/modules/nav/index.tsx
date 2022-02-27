@@ -41,7 +41,7 @@ export const Navbar = () => {
       borderBottom={"2px"}
       borderColor={"gray.700"}
       transition={"150ms ease-in-out"}
-      boxShadow={scrolled ? "2xl" : "lg"}
+      boxShadow={scrolled ? "xl" : "md"}
       // Imitating `backdrop-filter` behavior on incompatible browsers
       sx={{
         // gray.700
