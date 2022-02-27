@@ -140,7 +140,7 @@ const Page: NextPage = () => {
                 placeholder={"john_doe-1234"}
                 {...register("username")}
               />
-              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired isInvalid={!isNil(errors.email)}>
