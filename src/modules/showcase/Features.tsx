@@ -22,7 +22,7 @@ const features: IFeature[] = [
       <>
         Polygon is focused on the privacy and security of your information. We{" "}
         <chakra.span color={"purple.400"} fontWeight={"extrabold"}>
-          DO NOT
+          do not
         </chakra.span>{" "}
         collect any telemetry information, use machine learning algorithms to
         predict your behavior and do not sell your information to 3rd party

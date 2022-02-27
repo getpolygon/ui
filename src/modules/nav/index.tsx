@@ -4,23 +4,17 @@ import {
   Button,
   chakra,
   Flex,
+  Link,
   Stack,
   Text,
 } from "@chakra-ui/react";
 import { isEmpty } from "lodash";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
-import { signIn, signOut } from "next-auth/react";
-import { useUserStore } from "~/lib/stores/useUserStore";
 
 export const Navbar = () => {
-  const user = useUserStore(({ user }) => user);
+  const user = {};
   const [scrolled, setScrolled] = useState(false);
-
-  const action = () => {
-    if (!isEmpty(user)) return signOut({ callbackUrl: "/" });
-    else return signIn();
-  };
 
   useEffect(() => {
     const listener = (_: Event) => {
@@ -104,16 +98,24 @@ export const Navbar = () => {
             </NextLink>
           )}
 
-          <Button
-            zIndex={0}
-            size={"lg"}
-            role={"button"}
-            rounded={"full"}
-            colorScheme={"gray"}
-            onClick={() => action()}
+          <NextLink
+            passHref
+            href={isEmpty(user) ? "/auth/login" : "/auth/logout"}
           >
-            {isEmpty(user) ? "Login" : "Logout"}
-          </Button>
+            <Button
+              as={Link}
+              zIndex={0}
+              size={"lg"}
+              role={"button"}
+              rounded={"full"}
+              colorScheme={"gray"}
+              style={{
+                textDecoration: "none",
+              }}
+            >
+              {isEmpty(user) ? "Login" : "Logout"}
+            </Button>
+          </NextLink>
         </Stack>
       </Flex>
     </Box>

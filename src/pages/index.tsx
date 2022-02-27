@@ -11,7 +11,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { NextPage } from "next";
-import { NextSeo } from "next-seo";
+import { Seo } from "~/lib/seo/Seo";
 import { BiLinkExternal } from "react-icons/bi";
 import { Section } from "~/modules/showcase/Section";
 import { Features } from "~/modules/showcase/Features";
@@ -22,20 +22,7 @@ import { SectionInDevelopment } from "~/components/SectionInDevelopment";
 const Page: NextPage = () => {
   return (
     <Flex h={"100vh"} direction={"column"}>
-      {/* Page metadata with disabled SEI (search engine indexing) */}
-      <NextSeo
-        noindex
-        nofollow
-        title={""}
-        description={""}
-        openGraph={{
-          type: "website",
-          locale: "en-US",
-          title: "",
-          site_name: "",
-          description: "",
-        }}
-      />
+      <Seo />
 
       <WelcomeLayout>
         <Box as={"main"} role={"main"} px={4} py={9} flexGrow={1}>
