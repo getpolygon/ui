@@ -1,7 +1,3 @@
-import { z } from "zod";
-import { NextPage } from "next";
-import NextLink from "next/link";
-import { useForm } from "react-hook-form";
 import {
   Button,
   chakra,
@@ -11,12 +7,17 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react";
+import { z } from "zod";
 import { isNil } from "lodash";
+import { NextPage } from "next";
+import NextLink from "next/link";
 import axios from "~/lib/http/axios";
+import { useToast } from "~/lib/ui/useToast";
 import { AuthUi } from "~/modules/auth/AuthUi";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SectionInDevelopment } from "~/components/SectionInDevelopment";
-import { useToast } from "~/lib/ui/useToast";
+import { PasswordInputWithToggle } from "~/components/PasswordInputWithToggle";
 
 const schema = z.object({
   username: z.string().regex(/^[a-z0-9_-]{3,15}$/gm, {
@@ -24,7 +25,7 @@ const schema = z.object({
   }),
   lastName: z.string({ required_error: "Please enter your last name" }),
   firstName: z.string({ required_error: "Please enter your first name" }),
-  email: z.string().email({ message: "Please enter a valid email address" }),
+  email: z.string().email({ message: "Please provide a valid email address" }),
   password: z
     .string()
     .min(8, { message: "Password should be at least 8 characters long" }),
@@ -59,7 +60,7 @@ const helper = (
 );
 
 const Page: NextPage = () => {
-  const { formState, register, handleSubmit } = useForm<Schema>({
+  const { formState, register, handleSubmit, control } = useForm<Schema>({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
@@ -93,16 +94,6 @@ const Page: NextPage = () => {
           helper,
           children: heading,
         }}
-        actions={{
-          primary: {
-            href: "/",
-            text: "← Back to the main page",
-          },
-          secondary: {
-            text: "Forgot password?",
-            href: "/auth/forgot-password",
-          },
-        }}
       >
         <form
           autoCorrect={"off"}
@@ -113,53 +104,69 @@ const Page: NextPage = () => {
           <Stack>
             <Stack direction={"row"}>
               <FormControl isRequired isInvalid={!isNil(errors.firstName)}>
-                <FormLabel>First name</FormLabel>
+                <FormLabel htmlFor={"firstName"}>First name</FormLabel>
+
                 <Input
                   type={"text"}
                   placeholder={"John"}
                   {...register("firstName")}
                 />
+
                 <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
               </FormControl>
 
               <FormControl isRequired isInvalid={!isNil(errors.lastName)}>
-                <FormLabel>Last name</FormLabel>
+                <FormLabel htmlFor={"lastName"}>Last name</FormLabel>
+
                 <Input
                   type={"text"}
                   placeholder={"Doe"}
                   {...register("lastName")}
                 />
+
                 <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
               </FormControl>
             </Stack>
 
             <FormControl isRequired isInvalid={!isNil(errors.username)}>
-              <FormLabel>Username</FormLabel>
+              <FormLabel htmlFor={"username"}>Username</FormLabel>
+
               <Input
                 type={"text"}
                 placeholder={"john_doe-1234"}
                 {...register("username")}
               />
+
               <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired isInvalid={!isNil(errors.email)}>
-              <FormLabel>Email address</FormLabel>
+              <FormLabel htmlFor={"email"}>Email address</FormLabel>
+
               <Input
                 type={"email"}
                 placeholder={"john@doe.org"}
                 {...register("email")}
               />
+
               <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
             </FormControl>
 
             <FormControl isRequired isInvalid={!isNil(errors.password)}>
-              <FormLabel>Password</FormLabel>
-              <Input
-                type={"password"}
-                placeholder={"Minimum 8 characters"}
-                {...register("password")}
+              <FormLabel htmlFor={"password"}>Password</FormLabel>
+
+              <Controller
+                control={control}
+                name={"password"}
+                render={({ field }) => (
+                  <PasswordInputWithToggle
+                    id={"password"}
+                    placeholder={"Minimum 8 characters"}
+                    onChange={(f) => field.onChange(f.currentTarget.value)}
+                  />
+                )}
               />
+
               <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
             </FormControl>
 
