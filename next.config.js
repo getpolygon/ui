@@ -7,6 +7,7 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com"],
   },
+  // Specifying the environment variables here to ensure their validity
   env: {
     IRON_SESSION_SECRET: env
       .get("IRON_SESSION_SECRET")

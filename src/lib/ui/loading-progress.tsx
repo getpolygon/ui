@@ -21,8 +21,8 @@ type Progress = {
 
 const LoadingProgressContext = createContext<Progress>({
   value: 0,
-  done: () => noop(),
-  start: () => noop(),
+  done: noop,
+  start: noop,
 });
 
 export const useLoadingProgress = (): Progress => {

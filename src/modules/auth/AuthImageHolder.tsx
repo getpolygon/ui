@@ -34,7 +34,7 @@ export const AuthImageHolder = () => {
         pos={"absolute"}
         fontWeight={"medium"}
       >
-        <chakra.span userSelect={"none"}>Images provided by </chakra.span>
+        <chakra.span userSelect={"none"}>Photos provided by </chakra.span>
         <chakra.a
           target={"_blank"}
           fontWeight={"extrabold"}

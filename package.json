@@ -28,7 +28,7 @@
     "request": "^2.88.2",
     "utility-types": "^3.10.0",
     "zod": "^3.11.6",
-    "zustand": "^3.6.9"
+    "zustand": "^3.7.1"
   },
   "devDependencies": {
     "@types/node": "17.0.21",

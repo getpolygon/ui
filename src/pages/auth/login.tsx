@@ -6,21 +6,17 @@ import {
   Input,
   Stack,
   chakra,
-  InputGroup,
-  InputRightElement,
-  IconButton,
 } from "@chakra-ui/react";
 import { z } from "zod";
 import { isNil } from "lodash";
 import { NextPage } from "next";
-import { useState } from "react";
 import NextLink from "next/link";
 import axios from "~/lib/http/axios";
-import { useForm } from "react-hook-form";
 import { AuthUi } from "~/modules/auth/AuthUi";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
+import { Controller, useForm } from "react-hook-form";
 import { SectionInDevelopment } from "~/components/SectionInDevelopment";
+import { PasswordInputWithToggle } from "~/components/PasswordInputWithToggle";
 
 const schema = z.object({
   email: z.string().email({ message: "Please provide a valid email address" }),
@@ -58,18 +54,17 @@ const helper = (
 );
 
 const Page: NextPage = () => {
-  const { formState, register, handleSubmit } = useForm<Schema>({
+  const { formState, register, handleSubmit, control } = useForm<Schema>({
     mode: "onChange",
     resolver: zodResolver(schema),
   });
+
+  const { errors, isValid, isDirty, isSubmitting } = formState;
 
   const submit = async (payload: Schema) => {
     const response = await axios.post("/api/login", payload);
     return console.log(response);
   };
-
-  const [showPassword, setShowPassword] = useState(false);
-  const { errors, isValid, isDirty, isSubmitting } = formState;
 
   return (
     <SectionInDevelopment>
@@ -80,16 +75,6 @@ const Page: NextPage = () => {
         heading={{
           helper,
           children: heading,
-        }}
-        actions={{
-          primary: {
-            href: "/",
-            text: "← Back to the main page",
-          },
-          secondary: {
-            text: "Forgot password?",
-            href: "/auth/forgot-password",
-          },
         }}
       >
         <form
@@ -103,7 +88,6 @@ const Page: NextPage = () => {
               <FormLabel htmlFor={"email"}>Email</FormLabel>
 
               <Input
-                id={"email"}
                 type={"email"}
                 placeholder={"john@doe.org"}
                 {...register("email")}
@@ -115,23 +99,17 @@ const Page: NextPage = () => {
             <FormControl isRequired isInvalid={!isNil(errors.password)}>
               <FormLabel htmlFor={"password"}>Password</FormLabel>
 
-              <InputGroup>
-                <Input
-                  id={"password"}
-                  placeholder={"Minimum 8 characters"}
-                  type={showPassword ? "text" : "password"}
-                  {...register("password")}
-                />
-
-                <InputRightElement>
-                  <IconButton
-                    size={"sm"}
-                    icon={showPassword ? <AiFillEyeInvisible /> : <AiFillEye />}
-                    aria-label={"Toggle password visibility"}
-                    onClick={() => setShowPassword(!showPassword)}
+              <Controller
+                control={control}
+                name={"password"}
+                render={({ field }) => (
+                  <PasswordInputWithToggle
+                    id={"password"}
+                    placeholder={"Minimum 8 characters"}
+                    onChange={(f) => field.onChange(f.currentTarget.value)}
                   />
-                </InputRightElement>
-              </InputGroup>
+                )}
+              />
 
               <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
             </FormControl>
