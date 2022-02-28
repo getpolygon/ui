@@ -5,8 +5,8 @@ import {
 import NextLink from "next/link";
 import { ReactNode } from "react";
 import { Seo } from "~/lib/seo/Seo";
-import { Required } from "utility-types";
 import { AuthFooter } from "./AuthFooter";
+import { DeepRequired } from "utility-types";
 import { AuthImageHolder } from "./AuthImageHolder";
 import { WEBSITE_TITLE } from "~/lib/seo/constants";
 import { AuthAction, IAuthActionProps } from "./AuthAction";
@@ -18,32 +18,32 @@ type IAuthUiProps = {
   };
 
   actions?: {
-    primary: IAuthActionProps;
-    secondary: IAuthActionProps;
+    primary?: IAuthActionProps;
+    secondary?: IAuthActionProps;
   };
 
   children: ReactNode;
   heading: IAuthHeadingHelperComboProps;
 };
 
-type IAuthUiPropsStrict = Required<IAuthUiProps, "actions">;
+type IAuthUiPropsStrict = DeepRequired<IAuthUiProps>;
 
 // This function will apply default values to the fields that
 // are optional.
 const withApplyDefaultProps = (props: IAuthUiProps): IAuthUiPropsStrict => ({
-  actions: props.actions ?? {
-    primary: {
+  actions: {
+    primary: props.actions?.primary ?? {
       href: "/",
       text: "← Back to the main page",
     },
-    secondary: {
+
+    secondary: props.actions?.secondary ?? {
       text: "Forgot password?",
       href: "/auth/forgot-password",
     },
   },
 
   heading: {
-    children: props.heading.children,
     helper: props.heading.helper ?? (
       <>
         Already using Polygon?{" "}
@@ -60,14 +60,15 @@ const withApplyDefaultProps = (props: IAuthUiProps): IAuthUiPropsStrict => ({
         to your account!
       </>
     ),
+    children: props.heading.children!,
   },
 
   seo: props.seo,
-  children: props.children,
+  children: props.children!,
 });
 
-export const AuthUi = (props: IAuthUiProps | IAuthUiPropsStrict) => {
-  props = withApplyDefaultProps(props);
+export const AuthUi = (props: IAuthUiProps) => {
+  props = withApplyDefaultProps(props) as IAuthUiPropsStrict;
 
   return (
     <>
@@ -93,15 +94,15 @@ export const AuthUi = (props: IAuthUiProps | IAuthUiPropsStrict) => {
 
               <Flex alignItems={"center"}>
                 <AuthAction
-                  href={props.actions?.primary.href!}
-                  text={props.actions?.primary.text!}
+                  href={props.actions?.primary?.href!}
+                  text={props.actions?.primary?.text!}
                 />
 
                 <Spacer />
 
                 <AuthAction
-                  href={props.actions?.secondary.href!}
-                  text={props.actions?.secondary.text!}
+                  href={props.actions?.secondary?.href!}
+                  text={props.actions?.secondary?.text!}
                 />
               </Flex>
             </Stack>

@@ -37,6 +37,12 @@ const Page: NextPage = () => {
   return (
     <AuthUi
       seo={{ prefix: "Password reset" }}
+      actions={{
+        secondary: {
+          href: "/auth/signup",
+          text: "Create an account at Polygon",
+        },
+      }}
       heading={{
         children: (
           <>
