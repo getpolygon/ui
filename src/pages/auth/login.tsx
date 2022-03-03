@@ -8,10 +8,12 @@ import {
   chakra,
 } from "@chakra-ui/react";
 import { z } from "zod";
+import axios from "axios";
 import { isNil } from "lodash";
 import { NextPage } from "next";
+import Router from "next/router";
 import NextLink from "next/link";
-import axios from "~/lib/http/axios";
+import { useToast } from "~/lib/ui/useToast";
 import { AuthUi } from "~/modules/auth/AuthUi";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
@@ -59,11 +61,30 @@ const Page: NextPage = () => {
     resolver: zodResolver(schema),
   });
 
+  const toast = useToast();
   const { errors, isValid, isDirty, isSubmitting } = formState;
 
   const submit = async (payload: Schema) => {
-    const response = await axios.post("/api/login", payload);
-    return console.log(response);
+    const response = await axios.post("/api/auth/login", payload);
+    if (response.status === 200) return Router.push("/platform");
+    else {
+      let reason: string;
+
+      switch (response.status) {
+        case 403:
+          reason = "Please provide a valid password";
+        case 404:
+          reason = "The account with the supplied email does not exist";
+        default:
+          reason = "We were not able to understand your error";
+      }
+
+      return toast({
+        status: "error",
+        description: reason,
+        title: "There was an error",
+      });
+    }
   };
 
   return (

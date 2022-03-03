@@ -4,20 +4,23 @@ import {
   Button,
   chakra,
   Flex,
+  IconButton,
   Link,
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { isEmpty } from "lodash";
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
+import { BsDoorOpenFill } from "react-icons/bs";
+import { useAuthProvider } from "~/lib/security/AuthProvider";
 
 export const Navbar = () => {
-  const user = {};
+  const { user } = useAuthProvider();
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const listener = (_: Event) => {
+    // Adding a listener to animate the navbar on scroll.
+    const listener = () => {
       if (window.scrollY > 0) setScrolled(true);
       else setScrolled(false);
     };
@@ -83,24 +86,22 @@ export const Navbar = () => {
           </Stack>
         </Box>
 
-        <Stack spacing={4} direction={"row"}>
-          {!isEmpty(user) && (
+        <Stack alignItems={"center"} direction={"row"}>
+          {user !== null && (
             <NextLink href={"/platform"} passHref>
-              <Button
+              <IconButton
+                isRound
                 as={"a"}
-                size={"lg"}
                 role={"button"}
-                rounded={"full"}
-                colorScheme={"purple"}
-              >
-                Platform
-              </Button>
+                icon={<BsDoorOpenFill />}
+                aria-label={"Go to the platform page"}
+              />
             </NextLink>
           )}
 
           <NextLink
             passHref
-            href={isEmpty(user) ? "/auth/login" : "/auth/logout"}
+            href={user === null ? "/auth/login" : "/auth/logout"}
           >
             <Button
               as={Link}
@@ -113,7 +114,7 @@ export const Navbar = () => {
                 textDecoration: "none",
               }}
             >
-              {isEmpty(user) ? "Login" : "Logout"}
+              {user === null ? "Login" : "Logout"}
             </Button>
           </NextLink>
         </Stack>
