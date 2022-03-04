@@ -16,7 +16,6 @@ import { useToast } from "~/lib/ui/useToast";
 import { AuthUi } from "~/modules/auth/AuthUi";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SectionInDevelopment } from "~/components/SectionInDevelopment";
 import { PasswordInputWithToggle } from "~/components/PasswordInputWithToggle";
 
 const schema = z.object({
@@ -85,102 +84,100 @@ const Page: NextPage = () => {
   };
 
   return (
-    <SectionInDevelopment>
-      <AuthUi
-        seo={{
-          prefix: "Register",
-        }}
-        heading={{
-          helper,
-          children: heading,
-        }}
+    <AuthUi
+      seo={{
+        prefix: "Register",
+      }}
+      heading={{
+        helper,
+        children: heading,
+      }}
+    >
+      <form
+        autoCorrect={"off"}
+        autoComplete={"off"}
+        autoCapitalize={"off"}
+        onSubmit={handleSubmit(submit)}
       >
-        <form
-          autoCorrect={"off"}
-          autoComplete={"off"}
-          autoCapitalize={"off"}
-          onSubmit={handleSubmit(submit)}
-        >
-          <Stack>
-            <Stack direction={"row"}>
-              <FormControl isRequired isInvalid={!isNil(errors.firstName)}>
-                <FormLabel htmlFor={"firstName"}>First name</FormLabel>
-
-                <Input
-                  type={"text"}
-                  placeholder={"John"}
-                  {...register("firstName")}
-                />
-
-                <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
-              </FormControl>
-
-              <FormControl isRequired isInvalid={!isNil(errors.lastName)}>
-                <FormLabel htmlFor={"lastName"}>Last name</FormLabel>
-
-                <Input
-                  type={"text"}
-                  placeholder={"Doe"}
-                  {...register("lastName")}
-                />
-
-                <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
-              </FormControl>
-            </Stack>
-
-            <FormControl isRequired isInvalid={!isNil(errors.username)}>
-              <FormLabel htmlFor={"username"}>Username</FormLabel>
+        <Stack>
+          <Stack direction={"row"}>
+            <FormControl isRequired isInvalid={!isNil(errors.firstName)}>
+              <FormLabel htmlFor={"firstName"}>First name</FormLabel>
 
               <Input
                 type={"text"}
-                placeholder={"john_doe-1234"}
-                {...register("username")}
+                placeholder={"John"}
+                {...register("firstName")}
               />
 
-              <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
+              <FormErrorMessage>{errors.firstName?.message}</FormErrorMessage>
             </FormControl>
 
-            <FormControl isRequired isInvalid={!isNil(errors.email)}>
-              <FormLabel htmlFor={"email"}>Email address</FormLabel>
+            <FormControl isRequired isInvalid={!isNil(errors.lastName)}>
+              <FormLabel htmlFor={"lastName"}>Last name</FormLabel>
 
               <Input
-                type={"email"}
-                placeholder={"john@doe.org"}
-                {...register("email")}
+                type={"text"}
+                placeholder={"Doe"}
+                {...register("lastName")}
               />
 
-              <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+              <FormErrorMessage>{errors.lastName?.message}</FormErrorMessage>
             </FormControl>
-
-            <FormControl isRequired isInvalid={!isNil(errors.password)}>
-              <FormLabel htmlFor={"password"}>Password</FormLabel>
-
-              <Controller
-                control={control}
-                name={"password"}
-                render={({ field }) => (
-                  <PasswordInputWithToggle
-                    id={"password"}
-                    placeholder={"Minimum 8 characters"}
-                    onChange={(f) => field.onChange(f.currentTarget.value)}
-                  />
-                )}
-              />
-
-              <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
-            </FormControl>
-
-            <Button
-              type={"submit"}
-              isLoading={isSubmitting}
-              isDisabled={!isValid || isSubmitting || !isDirty}
-            >
-              Sign Up
-            </Button>
           </Stack>
-        </form>
-      </AuthUi>
-    </SectionInDevelopment>
+
+          <FormControl isRequired isInvalid={!isNil(errors.username)}>
+            <FormLabel htmlFor={"username"}>Username</FormLabel>
+
+            <Input
+              type={"text"}
+              placeholder={"john_doe-1234"}
+              {...register("username")}
+            />
+
+            <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isRequired isInvalid={!isNil(errors.email)}>
+            <FormLabel htmlFor={"email"}>Email address</FormLabel>
+
+            <Input
+              type={"email"}
+              placeholder={"john@doe.org"}
+              {...register("email")}
+            />
+
+            <FormErrorMessage>{errors.email?.message}</FormErrorMessage>
+          </FormControl>
+
+          <FormControl isRequired isInvalid={!isNil(errors.password)}>
+            <FormLabel htmlFor={"password"}>Password</FormLabel>
+
+            <Controller
+              control={control}
+              name={"password"}
+              render={({ field }) => (
+                <PasswordInputWithToggle
+                  id={"password"}
+                  placeholder={"Minimum 8 characters"}
+                  onChange={(f) => field.onChange(f.currentTarget.value)}
+                />
+              )}
+            />
+
+            <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+          </FormControl>
+
+          <Button
+            type={"submit"}
+            isLoading={isSubmitting}
+            isDisabled={!isValid || isSubmitting || !isDirty}
+          >
+            Sign Up
+          </Button>
+        </Stack>
+      </form>
+    </AuthUi>
   );
 };
 

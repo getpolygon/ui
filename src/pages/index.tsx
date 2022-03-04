@@ -65,39 +65,37 @@ const Page: NextPage = () => {
                 </Holder>
 
                 <Holder>
-                  <SectionInDevelopment>
-                    <Stack
-                      alignItems={"center"}
-                      justifyContent={"center"}
-                      direction={["column", "row"]}
+                  <Stack
+                    alignItems={"center"}
+                    justifyContent={"center"}
+                    direction={["column", "row"]}
+                  >
+                    {/* <Button
+                      as={"a"}
+                      size={"lg"}
+                      role={"button"}
+                      rounded={"full"}
+                      target={"_blank"}
+                      colorScheme={"purple"}
+                      href={"https://ko-fi.com/"}
+                      rel={"noreferrer noopener"}
                     >
-                      <Button
-                        as={"a"}
-                        size={"lg"}
-                        role={"button"}
-                        rounded={"full"}
-                        target={"_blank"}
-                        colorScheme={"purple"}
-                        href={"https://ko-fi.com/"}
-                        rel={"noreferrer noopener"}
-                      >
-                        Donate
-                      </Button>
+                      Donate
+                    </Button> */}
 
-                      <Button
-                        as={"a"}
-                        size={"lg"}
-                        role={"button"}
-                        rounded={"full"}
-                        target={"_blank"}
-                        colorScheme={"gray"}
-                        rel={"noreferrer noopener"}
-                        href={"https://github.com/polygon-isecure/core/"}
-                      >
-                        Get Started
-                      </Button>
-                    </Stack>
-                  </SectionInDevelopment>
+                    <Button
+                      as={"a"}
+                      size={"lg"}
+                      role={"button"}
+                      rounded={"full"}
+                      target={"_blank"}
+                      colorScheme={"gray"}
+                      rel={"noreferrer noopener"}
+                      href={"https://github.com/polygon-isecure/core/"}
+                    >
+                      Get Started
+                    </Button>
+                  </Stack>
                 </Holder>
               </Stack>
             </Box>

@@ -3,11 +3,10 @@ import {
   IAuthHeadingHelperComboProps,
 } from "./AuthHeadingHelperCombo";
 import NextLink from "next/link";
+import { ReactNode } from "react";
 import { Seo } from "~/lib/seo/Seo";
 import { AuthFooter } from "./AuthFooter";
 import { DeepRequired } from "utility-types";
-import { ReactNode, useEffect } from "react";
-import { useToast } from "~/lib/ui/useToast";
 import { AuthImageHolder } from "./AuthImageHolder";
 import { WEBSITE_TITLE } from "~/lib/seo/constants";
 import { AuthAction, IAuthActionProps } from "./AuthAction";
@@ -70,24 +69,6 @@ const withApplyDefaultProps = (props: IAuthUiProps): IAuthUiPropsStrict => ({
 
 export const AuthUi = (props: IAuthUiProps) => {
   props = withApplyDefaultProps(props) as IAuthUiPropsStrict;
-  const toast = useToast();
-
-  useEffect(() => {
-    const currentUrl = new URL(window.location.href);
-
-    if (
-      currentUrl.searchParams.get("auth-required") !== null &&
-      currentUrl.searchParams.get("is-redirected") !== null
-    ) {
-      toast({
-        status: "error",
-        title: "Authentication required",
-        description: "Please login or create an account before continuing",
-      });
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <>
