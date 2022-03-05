@@ -57,7 +57,7 @@ const Page: NextPage = () => {
                           fontWeight={"semibold"}
                         >
                           Polygon is an upcoming open-source & privacy-oriented
-                          social network that is not hungry for your data.
+                          social network that is <chakra.span color={"purple.400"} fontWeight={"bold"}>not</chakra.span>{" "} hungry for your data.
                         </Text>
                       </Box>
                     </Box>
@@ -166,7 +166,7 @@ const Page: NextPage = () => {
                         bgColor: "purple.600",
                         transform: "translateY(-3.8px)",
                       }}
-                      transition={"200ms ease-in-out"}
+                      transition={"240ms ease-in-out"}
                     >
                       <Flex alignItems={"center"}>
                         <Spacer />
