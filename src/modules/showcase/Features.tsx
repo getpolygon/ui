@@ -25,7 +25,7 @@ const features: IFeature[] = [
           do not
         </chakra.span>{" "}
         collect any telemetry information, use machine learning algorithms to
-        predict your behavior and do not sell your information to 3rd party
+        predict your behavior, or sell your information to 3rd party
         advertisers.
       </>
     ),
@@ -56,7 +56,7 @@ const features: IFeature[] = [
     children: (
       <>
         Polygon is open-source, which means that you can host your own separate
-        instance of Polygon wherever and however you want, be it a home server
+        instance of Polygon wherever and however you want, be it on a home server
         or a cloud VPS instance. You can also contribute to the code on our{" "}
         <Link href={"https://github.com/polygon-isecure/"}>GitHub</Link> page.
       </>
@@ -83,11 +83,11 @@ const features: IFeature[] = [
     children: (
       <>
         Polygon provides an open-source and modern user interface, crafted with
-        the best bleeding-edge front-end technologies. Our stack includes the
+        the most cutting-edge front-end technologies. Our stack includes the
         latest versions of{" "}
         <Link href={"https://www.typescriptlang.org/"}>TypeScript</Link>,{" "}
         <Link href={"https://www.chakra-ui.com/"}>Chakra UI</Link>, and{" "}
-        <Link href={"https://www.nextjs.org/"}>Next.js</Link>. The pages are
+        <Link href={"https://www.nextjs.org/"}>Next.js</Link>. The pages on our website are
         aimed to be fully responsive and user-friendly.
       </>
     ),
