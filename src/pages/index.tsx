@@ -136,10 +136,7 @@ const Page: NextPage = () => {
                         fontSize={"0.8885em"}
                         color={"gray.500"}
                       >
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Dolor doloremque molestias, aliquam at dolorum
-                        facere laudantium explicabo fugit quas ut optio, sunt
-                        possimus quasi nihil suscipit nisi itaque id quibusdam.
+                        Thank you for your interest in helping us develop Polygon, it is greatly appreciated! We&#39;re still working out the kinks in the system. Please see the API documentation below.
                       </Text>
                     </Stack>
                   </Box>
