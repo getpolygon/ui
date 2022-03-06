@@ -100,8 +100,8 @@ export const Navbar = () => {
             </NextLink>
           )}
           <NextLink href={"https://github.com/polygon-isecure/"} passHref>
-            <Button style={{backgroundColor: 'transparent', transition: '0.3s ease'}} _hover={{
-              transform: 'scale(1.2)',
+            <Button style={{backgroundColor: 'transparent', transition: '0.24s ease'}} _hover={{
+              transform: 'scale(1.1)',
               cursor: 'pointer',
               }}
               >

@@ -8,6 +8,8 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com"],
   },
+  // swcMinify is a new next.js minifier that's much faster than the default one
+  swcMinify: true,
   // Specifying the environment variables here to ensure their validity
   env: {
     IRON_SESSION_SECRET: env
