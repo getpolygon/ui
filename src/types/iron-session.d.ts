@@ -1,7 +1,8 @@
+import { Assign } from "utility-types";
 import { Session } from "./common";
 
 declare module "iron-session" {
-  export interface IronSession {
+  interface IronSessionData {
     auth: Session;
   }
 }

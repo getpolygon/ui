@@ -1,5 +1,6 @@
 const env = require("env-var");
 const withPWA = require("next-pwa");
+const runtimeCaching = require("next-pwa/cache");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -21,6 +22,7 @@ const config = withPWA({
   pwa: {
     dest: "public",
     register: true,
+    runtimeCaching,
     skipWaiting: true,
     disable: process.env.NODE_ENV === "development",
   },
