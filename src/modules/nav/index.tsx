@@ -87,7 +87,7 @@ export const Navbar = () => {
           </Stack>
         </Box>
 
-        <Stack alignItems={"center"} direction={"row"}>
+        <Stack alignItems={"center"} direction={"row"} spacing={1}>
           {user !== null && (
             <NextLink href={"/platform"} passHref>
               <IconButton
