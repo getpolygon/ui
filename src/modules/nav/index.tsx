@@ -13,6 +13,7 @@ import NextLink from "next/link";
 import { useEffect, useState } from "react";
 import { BsDoorOpenFill } from "react-icons/bs";
 import { useAuthProvider } from "~/lib/security/AuthProvider";
+import { AiFillGithub as GitHub } from "react-icons/ai";
 
 export const Navbar = () => {
   const { user } = useAuthProvider();
@@ -86,7 +87,7 @@ export const Navbar = () => {
           </Stack>
         </Box>
 
-        <Stack alignItems={"center"} direction={"row"}>
+        <Stack alignItems={"center"} direction={"row"} spacing={1}>
           {user !== null && (
             <NextLink href={"/platform"} passHref>
               <IconButton
@@ -98,7 +99,19 @@ export const Navbar = () => {
               />
             </NextLink>
           )}
-
+          <NextLink href={"https://github.com/polygon-isecure/"} passHref>
+            <Button style={{backgroundColor: 'transparent', transition: '0.24s ease'}} _hover={{
+              transform: 'scale(1.1)',
+              cursor: 'pointer',
+              }}
+              >
+              <GitHub style={{
+                color: 'white',
+                borderRadius: '50px',
+                padding: '8px',
+              }} size="3rem" />
+            </Button>
+          </NextLink>
           <NextLink
             passHref
             href={user === null ? "/auth/login" : "/auth/logout"}
