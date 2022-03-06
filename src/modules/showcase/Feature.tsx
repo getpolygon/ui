@@ -17,7 +17,7 @@ export const Feature = ({ title, children, icon, ...rest }: IFeature) => {
       userSelect={"none"}
       maxW={["xl", "2xl"]}
       borderColor={"gray.700"}
-      transition={"120ms ease-in-out"}
+      transition={"240ms ease-in-out"}
       _hover={{
         boxShadow: "xl",
         transform: "translateY(-6px)",
