@@ -12,8 +12,8 @@ import {
 import NextLink from "next/link";
 import { useEffect, useState } from "react";
 import { BsDoorOpenFill } from "react-icons/bs";
-import { useAuthProvider } from "~/lib/security/AuthProvider";
 import { AiFillGithub as GitHub } from "react-icons/ai";
+import { useAuthProvider } from "~/lib/security/AuthProvider";
 
 export const Navbar = () => {
   const { user } = useAuthProvider();
@@ -87,7 +87,7 @@ export const Navbar = () => {
           </Stack>
         </Box>
 
-        <Stack alignItems={"center"} direction={"row"} spacing={1}>
+        <Stack alignItems={"center"} direction={"row"} spacing={3}>
           {user !== null && (
             <NextLink href={"/platform"} passHref>
               <IconButton
@@ -99,19 +99,32 @@ export const Navbar = () => {
               />
             </NextLink>
           )}
+
           <NextLink href={"https://github.com/polygon-isecure/"} passHref>
-            <Button style={{backgroundColor: 'transparent', transition: '0.24s ease'}} _hover={{
-              transform: 'scale(1.1)',
-              cursor: 'pointer',
+            <chakra.a
+              role={"button"}
+              target={"_blank"}
+              rel={"noreferrer noopener"}
+              _hover={{
+                cursor: "pointer",
+                transform: "scale(1.1)",
               }}
-              >
-              <GitHub style={{
-                color: 'white',
-                borderRadius: '50px',
-                padding: '8px',
-              }} size="3rem" />
-            </Button>
+              style={{
+                transition: "0.24s ease",
+                backgroundColor: "transparent",
+              }}
+            >
+              <GitHub
+                size={"3rem"}
+                style={{
+                  color: "white",
+                  padding: "8px",
+                  borderRadius: "50px",
+                }}
+              />
+            </chakra.a>
           </NextLink>
+
           <NextLink
             passHref
             href={user === null ? "/auth/login" : "/auth/logout"}
