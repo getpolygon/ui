@@ -5,17 +5,8 @@ import { useLoadingProgress } from "~/lib/ui/loading-progress";
 export const SharedLayout = ({ children }: { children: JSX.Element }) => {
   const { start, done } = useLoadingProgress();
 
-  // 2. onRouterChangeStart
-  const onRouteChangeStart = () => {
-    start();
-  };
-
-  // 3. onRouterChangeComplete
-  const onRouteChangeComplete = () => {
-    setTimeout(() => {
-      done();
-    }, 500);
-  };
+  const onRouteChangeStart = () => start();
+  const onRouteChangeComplete = () => setTimeout(() => done(), 500);
 
   useEffect(() => {
     Router.events.on("routeChangeStart", onRouteChangeStart);
