@@ -172,6 +172,7 @@ const Page: NextPage = () => {
             type={"submit"}
             isLoading={isSubmitting}
             isDisabled={!isValid || isSubmitting || !isDirty}
+            style={{marginTop: '20px'}}
           >
             Sign Up
           </Button>

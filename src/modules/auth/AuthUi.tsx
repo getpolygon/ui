@@ -90,7 +90,7 @@ export const AuthUi = (props: IAuthUiProps) => {
                 {props.heading.children}
               </AuthHeadingHelperCombo>
 
-              <Box>{props.children}</Box>
+              <Box pr={25} pl={25} alignItems={"center"}>{props.children}</Box>
 
               <Flex alignItems={"center"}>
                 <AuthAction
