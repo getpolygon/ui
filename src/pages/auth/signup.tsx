@@ -168,6 +168,24 @@ const Page: NextPage = () => {
             <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
           </FormControl>
 
+          <FormControl isRequired isInvalid={}>
+            <FormLabel htmlFor={"password"}>Confirm Password</FormLabel>
+
+            <Controller
+              control={control}
+              name={"password"}
+              render={({ field }) => (
+                <PasswordInputWithToggle
+                  id={"confirm-password"}
+                  placeholder={"Minimum 8 characters"}
+                  onChange={(f) => field.onChange(f.currentTarget.value)}
+                />
+              )}
+            />
+
+            <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+          </FormControl>
+
           <Button
             type={"submit"}
             isLoading={isSubmitting}
