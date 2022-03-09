@@ -169,11 +169,11 @@ const Page: NextPage = () => {
           </FormControl>
 
           <FormControl isRequired isInvalid={}>
-            <FormLabel htmlFor={"password"}>Confirm Password</FormLabel>
+            <FormLabel htmlFor={"confirmPassword"}>Confirm Password</FormLabel>
 
             <Controller
               control={control}
-              name={"password"}
+              name={"confirmPassword"}
               render={({ field }) => (
                 <PasswordInputWithToggle
                   id={"confirm-password"}
