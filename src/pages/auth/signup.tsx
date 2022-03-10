@@ -31,7 +31,7 @@ const schema = z.object({
   confirmPassword: z.string().min(8, { message: "Password should be at least 8 characters long" }),
 })
 .refine((data) => data.confirmPassword === data.password, {
-  message: "Passwords don't match",
+  message: "Passwords do not match",
 });
 
 type Schema = z.infer<typeof schema>;
