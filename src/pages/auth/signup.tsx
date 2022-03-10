@@ -28,12 +28,12 @@ const schema = z.object({
   password: z
     .string()
     .min(8, { message: "Password should be at least 8 characters long" }),
-  confirmPassword: z.string(),
+  confirmPassword: z.string().min(8, { message: "Password should be at least 8 characters long" }),
 })
-.refine(data => data.confirmPassword === data.password, {
+.refine((data) => data.confirmPassword === data.password, {
   message: "Passwords don't match",
-  path: ['confirm'],
-})
+  path: ['confirmPassword'],
+});
 
 type Schema = z.infer<typeof schema>;
 
@@ -181,14 +181,14 @@ const Page: NextPage = () => {
               name={"confirmPassword"}
               render={({ field }) => (
                 <PasswordInputWithToggle
-                  id={"confirm-password"}
+                  id={"confirmPassword"}
                   placeholder={"Minimum 8 characters"}
                   onChange={(f) => field.onChange(f.currentTarget.value)}
                 />
               )}
             />
 
-            <FormErrorMessage>{errors.password?.message}</FormErrorMessage>
+            <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
           </FormControl>
 
           <Button
