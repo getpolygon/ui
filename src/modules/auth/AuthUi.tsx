@@ -85,7 +85,7 @@ export const AuthUi = (props: IAuthUiProps) => {
           justifyContent={"center"}
         >
           <Stack maxW={"xl"} w={"full"} spacing={6}>
-            <Stack spacing={6}>
+            <Stack pt={20} spacing={6}>
               <AuthHeadingHelperCombo helper={props.heading.helper}>
                 {props.heading.children}
               </AuthHeadingHelperCombo>
