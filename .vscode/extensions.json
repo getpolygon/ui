@@ -1,0 +1,10 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "aaron-bond.better-comments",
+    "yzhang.markdown-all-in-one",
+    "formulahendry.auto-rename-tag",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}

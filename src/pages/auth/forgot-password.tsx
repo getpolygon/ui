@@ -1,6 +1,5 @@
 import {
   Button,
-  chakra,
   FormControl,
   FormErrorMessage,
   FormLabel,
@@ -40,18 +39,11 @@ const Page: NextPage = () => {
       actions={{
         secondary: {
           href: "/auth/signup",
-          text: "Create an account at Polygon",
+          text: "Create a Polygon account",
         },
       }}
       heading={{
-        children: (
-          <>
-            Reset your password at{" "}
-            <chakra.span fontWeight={"9000"} color={"purple.400"}>
-              Polygon
-            </chakra.span>{" "}
-          </>
-        ),
+        children: "Reset your password",
       }}
     >
       <form
