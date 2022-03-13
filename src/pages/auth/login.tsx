@@ -13,22 +13,20 @@ import { isNil } from "lodash";
 import { NextPage } from "next";
 import Router from "next/router";
 import NextLink from "next/link";
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { useToast } from "~/lib/ui/useToast";
 import { AuthUi } from "~/modules/auth/AuthUi";
+import { useToast } from "~/lib/ui/hooks/useToast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { AuthUiSearchParam } from "~/modules/auth/AuthUiSearchParam";
-import { PasswordInputWithToggle } from "~/components/PasswordInputWithToggle";
+import { PasswordInputWithToggleProps } from "~/components/PasswordInputWithToggle";
 
-const schema = z.object({
-  email: z.string().email({ message: "Please provide a valid email address" }),
-  password: z
-    .string()
-    .min(8, { message: "Password should be at least 8 characters long" }),
-});
-
-type Schema = z.infer<typeof schema>;
+const PasswordInputWithToggle = dynamic<PasswordInputWithToggleProps>(() =>
+  import("~/components/PasswordInputWithToggle").then(
+    (m) => m.PasswordInputWithToggle
+  )
+);
 
 const heading = (
   <>
@@ -57,17 +55,22 @@ const helper = (
 );
 
 const Page: NextPage = () => {
-  const { formState, register, handleSubmit, control } = useForm<Schema>({
-    mode: "onChange",
-    resolver: zodResolver(schema),
-  });
-
   const toast = useToast();
+  const schema = z.object({
+    email: z
+      .string()
+      .email({ message: "Please provide a valid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password should be at least 8 characters long" }),
+  });
   const { searchParams } = new URL(window.location.href);
   const [callbackUrl, setCallbackUrl] = useState("/platform");
+  // prettier-ignore
+  const { formState, register, handleSubmit, control } = useForm<z.infer<typeof schema>>({ mode: "onChange", resolver: zodResolver(schema) });
   const { errors, isValid, isDirty, isSubmitting } = formState;
 
-  const submit = async (payload: Schema) => {
+  const submit = async (payload: z.infer<typeof schema>) => {
     const response = await axios.post("/api/auth/login", payload);
     if (response.status === 200) {
       return Router.push(callbackUrl);
@@ -89,11 +92,13 @@ const Page: NextPage = () => {
   useEffect(() => {
     {
       const cbUrl = searchParams.get(AuthUiSearchParam.CallbackUrl);
-      const authRequired = Boolean(
-        searchParams.get(AuthUiSearchParam.AuthRequired)
-      );
+      // prettier-ignore
+      const authRequired = Boolean(searchParams.get(AuthUiSearchParam.AuthRequired));
 
-      if (cbUrl) setCallbackUrl(cbUrl);
+      if (cbUrl) {
+        setCallbackUrl(cbUrl);
+      }
+
       if (authRequired) {
         toast({
           status: "error",
@@ -124,11 +129,10 @@ const Page: NextPage = () => {
       >
         <Stack>
           <FormControl isRequired isInvalid={!isNil(errors.email)}>
-            <FormLabel htmlFor={"email"}>Email</FormLabel>
-
             <Input
               type={"email"}
-              placeholder={"john@doe.org"}
+              variant={"filled"}
+              placeholder={"Email address"}
               {...register("email")}
             />
 
@@ -136,15 +140,14 @@ const Page: NextPage = () => {
           </FormControl>
 
           <FormControl isRequired isInvalid={!isNil(errors.password)}>
-            <FormLabel htmlFor={"password"}>Password</FormLabel>
-
             <Controller
               control={control}
               name={"password"}
               render={({ field }) => (
                 <PasswordInputWithToggle
                   id={"password"}
-                  placeholder={"Minimum 8 characters"}
+                  variant={"filled"}
+                  placeholder={"Password (min. 8 characters)"}
                   onChange={(f) => field.onChange(f.currentTarget.value)}
                 />
               )}

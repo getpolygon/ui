@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 import { noop } from "lodash";
 import { useRouter } from "next/router";
-import { useToast } from "../ui/useToast";
+import { useToast } from "../ui/hooks/useToast";
 import { useFetchUser } from "./useFetchUser";
 import { Flex, Spinner } from "@chakra-ui/react";
 import { useFetchSession } from "./useFetchSession";

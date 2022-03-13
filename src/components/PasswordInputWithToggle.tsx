@@ -8,7 +8,7 @@ import {
 import { useState } from "react";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 
-interface PasswordInputWithToggleProps extends InputProps {}
+export interface PasswordInputWithToggleProps extends InputProps {}
 
 export const PasswordInputWithToggle = (
   props: PasswordInputWithToggleProps

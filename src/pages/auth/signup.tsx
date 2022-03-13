@@ -3,38 +3,33 @@ import {
   chakra,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Stack,
 } from "@chakra-ui/react";
+import {
+  AuthQueryParams,
+  useAuthQueryParams,
+} from "~/lib/ui/hooks/useAuthQueryParams";
 import { z } from "zod";
 import { isNil } from "lodash";
 import { NextPage } from "next";
 import NextLink from "next/link";
+import { useEffect } from "react";
+import dynamic from "next/dynamic";
 import axios from "~/lib/http/axios";
-import { useToast } from "~/lib/ui/useToast";
 import { AuthUi } from "~/modules/auth/AuthUi";
+import { useToast } from "~/lib/ui/hooks/useToast";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PasswordInputWithToggle } from "~/components/PasswordInputWithToggle";
+import { PasswordInputWithToggleProps } from "~/components/PasswordInputWithToggle";
 
-const schema = z.object({
-  username: z.string().regex(/^[a-z0-9_-]{3,15}$/gm, {
-    message: "Please enter a valid username",
-  }),
-  lastName: z.string({ required_error: "Please enter your last name" }),
-  firstName: z.string({ required_error: "Please enter your first name" }),
-  email: z.string().email({ message: "Please provide a valid email address" }),
-  password: z
-    .string()
-    .min(8, { message: "Password should be at least 8 characters long" }),
-  confirmPassword: z.string().min(8, { message: "Password should be at least 8 characters long" }),
-})
-.refine((data) => data.confirmPassword === data.password, {
-  message: "Passwords do not match",
-});
-
-type Schema = z.infer<typeof schema>;
+const PasswordInputWithToggle = dynamic<PasswordInputWithToggleProps>(() =>
+  import("~/components/PasswordInputWithToggle").then(
+    (m) => m.PasswordInputWithToggle
+  )
+);
 
 const heading = (
   <>
@@ -63,29 +58,79 @@ const helper = (
 );
 
 const Page: NextPage = () => {
-  const { formState, register, handleSubmit, control } = useForm<Schema>({
-    mode: "onChange",
-    resolver: zodResolver(schema),
-  });
+  const schema = z
+    .object({
+      lastName: z.string({ required_error: "Please enter your last name" }),
+      firstName: z.string({ required_error: "Please enter your first name" }),
 
-  const toast = useToast();
+      username: z
+        .string()
+        .min(3, { message: "Username must contain at least 3 characters" })
+        .max(15, { message: "Username cannot contain more than 15 characters" })
+        .regex(/^[a-z0-9_-]{3,15}$/gm, {
+          message: "Please enter a valid username",
+        }),
+
+      email: z
+        .string()
+        .email({ message: "Please provide a valid email address" }),
+
+      password: z
+        .string()
+        .min(8, { message: "Password should be at least 8 characters long" }),
+
+      confirmPassword: z
+        .string()
+        .min(8, { message: "Password should be at least 8 characters long" }),
+    })
+    .refine((f) => f.password === f.confirmPassword, {
+      path: ["confirmPassword"],
+      message: "Passwords do not match",
+    });
+
+  // prettier-ignore
+  const { formState, register, handleSubmit, control } = useForm<z.infer<typeof schema>>({ mode: "onChange", resolver: zodResolver(schema) });
   const { errors, isValid, isSubmitting, isDirty } = formState;
+  const toast = useToast();
 
-  const submit = async (payload: Schema) => {
-    const response = await axios.post("/api/auth/register", payload);
-    if (response.status === 201) {
-      toast({
-        status: "success",
-        title: "Account created successfully",
+  const callbackUrl = useAuthQueryParams(AuthQueryParams.CallbackUrl);
+  const authRequired = useAuthQueryParams(AuthQueryParams.AuthRequired);
+  const isRedirected = useAuthQueryParams(AuthQueryParams.IsRedirected);
+
+  const submit = async (payload: z.infer<typeof schema>) => {
+    if (!isValid || !isDirty) {
+      return toast({
+        status: "warning",
+        title: "Invalid payload",
+        description: "Contents of your submission are invalid or corrupted",
       });
     } else {
-      toast({
-        status: "error",
-        title: "An error occurred",
-        description: "There was an issue while creating your account",
-      });
+      const response = await axios.post("/api/auth/register", payload);
+      if (response.status === 201) {
+        return toast({
+          status: "success",
+          title: "Account created successfully",
+        });
+      } else {
+        return toast({
+          status: "error",
+          title: "An error occurred",
+          description: "There was an issue while creating your account",
+        });
+      }
     }
   };
+
+  useEffect(() => {
+    if (authRequired && isRedirected) {
+      toast({
+        title: "Please create an account to proceed",
+        description: "The resource is only accessible to registered users",
+      });
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <AuthUi
@@ -106,11 +151,10 @@ const Page: NextPage = () => {
         <Stack>
           <Stack direction={"row"}>
             <FormControl isRequired isInvalid={!isNil(errors.firstName)}>
-              <FormLabel htmlFor={"firstName"}>First name</FormLabel>
-
               <Input
                 type={"text"}
-                placeholder={"John"}
+                variant={"filled"}
+                placeholder={"First name"}
                 {...register("firstName")}
               />
 
@@ -118,11 +162,10 @@ const Page: NextPage = () => {
             </FormControl>
 
             <FormControl isRequired isInvalid={!isNil(errors.lastName)}>
-              <FormLabel htmlFor={"lastName"}>Last name</FormLabel>
-
               <Input
                 type={"text"}
-                placeholder={"Doe"}
+                variant={"filled"}
+                placeholder={"Last name"}
                 {...register("lastName")}
               />
 
@@ -131,23 +174,24 @@ const Page: NextPage = () => {
           </Stack>
 
           <FormControl isRequired isInvalid={!isNil(errors.username)}>
-            <FormLabel htmlFor={"username"}>Username</FormLabel>
-
-            <Input
-              type={"text"}
-              placeholder={"john_doe-1234"}
-              {...register("username")}
-            />
+            <InputGroup>
+              <InputLeftAddon>{"@"}</InputLeftAddon>
+              <Input
+                type={"text"}
+                variant={"filled"}
+                placeholder={"Username"}
+                {...register("username")}
+              />
+            </InputGroup>
 
             <FormErrorMessage>{errors.username?.message}</FormErrorMessage>
           </FormControl>
 
           <FormControl isRequired isInvalid={!isNil(errors.email)}>
-            <FormLabel htmlFor={"email"}>Email address</FormLabel>
-
             <Input
               type={"email"}
-              placeholder={"john@doe.org"}
+              variant={"filled"}
+              placeholder={"Email address"}
               {...register("email")}
             />
 
@@ -155,15 +199,14 @@ const Page: NextPage = () => {
           </FormControl>
 
           <FormControl isRequired isInvalid={!isNil(errors.password)}>
-            <FormLabel htmlFor={"password"}>Password</FormLabel>
-
             <Controller
               control={control}
               name={"password"}
               render={({ field }) => (
                 <PasswordInputWithToggle
                   id={"password"}
-                  placeholder={"Minimum 8 characters"}
+                  variant={"filled"}
+                  placeholder={"Password (min. 8 characters)"}
                   onChange={(f) => field.onChange(f.currentTarget.value)}
                 />
               )}
@@ -173,21 +216,22 @@ const Page: NextPage = () => {
           </FormControl>
 
           <FormControl isRequired isInvalid={!isNil(errors.confirmPassword)}>
-            <FormLabel htmlFor={"confirmPassword"}>Confirm Password</FormLabel>
-
             <Controller
               control={control}
               name={"confirmPassword"}
               render={({ field }) => (
-                <PasswordInputWithToggle
-                  id={"confirmPassword"}
-                  placeholder={"Minimum 8 characters"}
+                <Input
+                  type={"password"}
+                  variant={"filled"}
+                  placeholder={"Confirm password (min. 8 characters)"}
                   onChange={(f) => field.onChange(f.currentTarget.value)}
                 />
               )}
             />
 
-            <FormErrorMessage>{errors.confirmPassword?.message}</FormErrorMessage>
+            <FormErrorMessage>
+              {errors.confirmPassword?.message}
+            </FormErrorMessage>
           </FormControl>
 
           <Button
