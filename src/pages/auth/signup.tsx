@@ -68,7 +68,7 @@ const Page: NextPage = () => {
         .min(3, { message: "Username must contain at least 3 characters" })
         .max(15, { message: "Username cannot contain more than 15 characters" })
         .regex(/^[a-z0-9_-]{3,15}$/gm, {
-          message: "Please enter a valid username",
+          message: "Please enter a valid username, only lowercase",
         }),
 
       email: z
