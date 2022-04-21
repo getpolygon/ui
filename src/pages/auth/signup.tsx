@@ -220,8 +220,8 @@ const Page: NextPage = () => {
               control={control}
               name={"confirmPassword"}
               render={({ field }) => (
-                <Input
-                  type={"password"}
+                <PasswordInputWithToggle
+                  id={"confirmPassword"}
                   variant={"filled"}
                   placeholder={"Confirm password (min. 8 characters)"}
                   onChange={(f) => field.onChange(f.currentTarget.value)}
